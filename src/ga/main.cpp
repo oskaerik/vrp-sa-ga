@@ -68,6 +68,56 @@ Solution aex(Solution &p1, Solution &p2) {
     return c;
 }
 
+void mutation_swap(Solution &s) {
+    int i = rand() % s.sequence.size();
+    int j = i;
+    while (j == i)
+        j = rand() % s.sequence.size();
+    std::swap(s.sequence[i], s.sequence[j]);
+}
+
+bool move_delimiter_left(Solution &s, int i) {
+    if (s.delimiters[i] > 0
+            && (i == 0 || s.delimiters[i-1] < s.delimiters[i])) {
+        --s.delimiters[i];
+        return true;
+    }
+    return false;
+}
+
+bool move_delimiter_right(Solution &s, int i) {
+    if (s.delimiters[i] < int(s.sequence.size())
+            && (i == int(s.delimiters.size())-1 || s.delimiters[i+1] > s.delimiters[i])) {
+        ++s.delimiters[i];
+        return true;
+    }
+    return false;
+}
+
+// Mutates the solution by moving a random delimiter right or left
+void mutation_delimiter(Solution &s) {
+    bool flipped = false; // sanity check
+    int start = rand() % s.delimiters.size();
+    int i = start;
+    int direction = rand() % 2 == 0 ? -1 : 1;
+    while (true) {
+        if (direction == -1) {
+            if (move_delimiter_left(s, i)) return;
+            if (move_delimiter_right(s, i)) return;
+        } else {
+            if (move_delimiter_right(s, i)) return;
+            if (move_delimiter_left(s, i)) return;
+        }
+        i += direction;
+        if (i < 0 || i >= int(s.delimiters.size())) {
+            assert(!flipped); // can not double flip
+            i = start;
+            direction *= -1;
+            flipped = true;
+        }
+    }
+}
+
 void print_solution(Solution &s) {
     printf("Vehicle 0: ");
     for (int j = 0; j < s.delimiters[0]; ++j)
@@ -84,7 +134,7 @@ void print_solution(Solution &s) {
     printf("Vehicle %d: ", int(s.delimiters.size()));
     for (int j = s.delimiters.back(); j < int(s.sequence.size()); ++j)
         printf("%d ", s.sequence[j]);
-    printf("\n");
+    printf("\n\n");
 }
 
 int main() {
@@ -107,9 +157,19 @@ int main() {
 
     int n = g.size(); // nodes
     int m = 3; // vehicles
+    assert(n > 2);
+    assert(m > 1);
+    assert(m < n);
 
     // Generate a random population
     std::vector<Solution> population(POP_SIZE);
     for (auto &s : population)
         s = random_solution(n, m);
+
+    for (int i = 0; i < 10; ++i) {
+        print_solution(population[i]);
+        mutation_delimiter(population[i]);
+        print_solution(population[i]);
+        printf("\n\n");
+    }
 }
