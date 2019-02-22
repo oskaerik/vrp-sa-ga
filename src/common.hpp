@@ -39,6 +39,29 @@ public:
     std::vector<int> sequence;
     std::vector<int> delimiters;
 
+    // Calculates score of solution
+    double score(const Graph & graph){
+        int n = graph.size();
+        assert(n >= 3); 
+        assert(delimiters.size() + 1 <= n);
+
+        double maxRouteLength = -1;
+        int i = 0;
+        for (int j = 0; j <= delimiters.size(); j++){ //sic!
+            int delimiter = (j < delimiters.size())? delimiters.at(j) : n - 1;
+            
+            double routeLength = graph.at(0).at(sequence.at(i));
+            for(; i < delimiter - 1; i++){
+                routeLength += graph.at(sequence.at(i)).at(sequence.at(i + 1));   
+            }
+            routeLength += graph.at(sequence.at(i)).at(0);
+            maxRouteLength = std::max(maxRouteLength, routeLength);
+            
+            i++;
+        }
+        return maxRouteLength;
+    }
+
     // Generates a random solution
     void randomize(int n, int m) {
         sequence.resize(n-1);
