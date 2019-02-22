@@ -6,8 +6,34 @@
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <random>
 
 using Graph = std::vector<std::vector<double>>;
+
+Graph uniform_random_2d_graph(int n){
+    assert(n >= 3);
+    
+    std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(0, 10); // Random uniform double distribution in [0, 10)
+
+    std::vector<double> xs;
+    std::vector<double> ys;
+    for(int i = 0; i < n; i++){
+        xs.push_back(dis(gen));
+        ys.push_back(dis(gen));
+    }
+
+    Graph graph(n, std::vector<double>(n, 0));
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            double dist = sqrt(pow(xs.at(j) - xs.at(i) , 2) + pow(ys.at(j) - ys.at(i), 2));
+            graph.at(i).at(j) = dist;    
+        }   
+    }
+    return graph;
+}
+
 
 class Solution {
     public:
