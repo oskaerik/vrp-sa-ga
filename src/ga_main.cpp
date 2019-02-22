@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <cmath>
 #include <cassert>
 #include "common.hpp"
@@ -47,6 +46,7 @@ Solution aex(Solution &p1, Solution &p2) {
 }
 
 int main() {
+    srand(time(NULL));
     /*
     Graph g = {
         {0, 1, sqrt(2), 1},
@@ -73,12 +73,13 @@ int main() {
     // Generate a random population
     std::vector<Solution> population(POP_SIZE);
     for (auto &s : population)
-        s = random_solution(n, m);
+        s.randomize(n, m);
 
     for (int i = 0; i < 10; ++i) {
-        print_solution(population[i]);
-        mutation_delimiter(population[i]);
-        print_solution(population[i]);
-        printf("\n\n");
+        printf("--- Solution %d ---\n", i);
+        population[i].print();
+        population[i].mutate();
+        population[i].print();
+        printf("\n");
     }
 }
