@@ -1,7 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <cassert>
 #include "common.hpp"
 
 #define POP_SIZE 100

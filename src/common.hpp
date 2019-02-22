@@ -1,5 +1,10 @@
 #ifndef _COMMON_HPP_
 #define _COMMON_HPP_
+#include <cmath>
+#include <cassert>
+#include <cstdio>
+#include <ctime>
+#include <vector>
 #include <algorithm>
 
 using Graph = std::vector<std::vector<double>>;
