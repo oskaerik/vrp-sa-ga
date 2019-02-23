@@ -1,5 +1,6 @@
 #ifndef _COMMON_HPP_
 #define _COMMON_HPP_
+
 #include <cmath>
 #include <cassert>
 #include <cstdio>
@@ -12,7 +13,7 @@ using Graph = std::vector<std::vector<double>>;
 
 Graph uniform_random_2d_graph(int n){
     assert(n >= 3);
-    
+
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> dis(0, 10); // Random uniform double distribution in [0, 10)
@@ -28,8 +29,8 @@ Graph uniform_random_2d_graph(int n){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             double dist = sqrt(pow(xs.at(j) - xs.at(i) , 2) + pow(ys.at(j) - ys.at(i), 2));
-            graph.at(i).at(j) = dist;    
-        }   
+            graph.at(i).at(j) = dist;
+        }
     }
     return graph;
 }
@@ -42,22 +43,22 @@ public:
     // Calculates score of solution
     double score(const Graph & graph){
         int n = graph.size();
-        assert(n >= 3); 
+        assert(n >= 3);
         assert(delimiters.size() + 1 <= n);
 
         double maxRouteLength = -1;
         int i = 0;
         for (int j = 0; j <= delimiters.size(); j++){ //sic!
             int delimiter = (j < delimiters.size())? delimiters.at(j) : n - 1;
-            
+
             double routeLength = graph.at(0).at(sequence.at(i));
             for(; i < delimiter - 1; i++){
-                routeLength += graph.at(sequence.at(i)).at(sequence.at(i + 1));   
+                routeLength += graph.at(sequence.at(i)).at(sequence.at(i + 1));
             }
             routeLength += graph.at(sequence.at(i)).at(0);
             maxRouteLength = std::max(maxRouteLength, routeLength);
-            
-            i++;
+
+            if (++i >= n-1) break;
         }
         return maxRouteLength;
     }
