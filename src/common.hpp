@@ -43,8 +43,9 @@ public:
     // Calculates score of solution
     double score(const Graph & graph){
         int n = graph.size();
-        assert(n >= 3);
-        assert(delimiters.size() + 1 <= n);
+        int m = delimiters.size() + 1; 
+        assert(n >= 3 && m >= 2);
+        assert(m < n);
 
         double maxRouteLength = -1;
         int i = 0;
