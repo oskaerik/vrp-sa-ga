@@ -5,10 +5,10 @@
 #include <cfloat>
 #include "common.hpp"
 
-#define POP_SIZE 10
-#define GEN_LIMIT 10
+#define POP_SIZE 1000
+#define GEN_LIMIT 1000
 #define MUT_RATE 0.1
-#define GEN_PRINT 1
+#define GEN_PRINT 1000000
 
 using Population = std::vector<Solution>;
 

@@ -14,25 +14,27 @@ bool accept(double new_s, double old_s, double temp) {
 }
 
 Solution simulated_annealing(const Graph &g, int m) {
-  Solution s;
-  s.randomize(g.size(),m);
-  Solution best = s;
-  double best_score = s.score(g);
+  Solution curr;
+  curr.randomize(g.size(),m);
+  Solution best = curr;
+  double best_score = curr.score(g);
   double curr_score = best_score;
 
-  double temp = 100, cool_rate = 0.99999;
-  for (int i = 0; i < 1000000; ++i) {
+  double temp = 5000, cool_rate = 0.99999;
+  int since_improvement = 0;
+  while (++since_improvement < 1000000) {
     temp *= cool_rate;
-    Solution s2 = s;
-    s2.mutate();
-    double new_score = s2.score(g);
+    Solution s = curr;
+    s.mutate();
+    double new_score = s.score(g);
     if (!accept(new_score, curr_score, temp))
       continue;
     curr_score = new_score;
-    s = s2;
+    curr = s;
     if (curr_score < best_score) {
       best_score = new_score;
-      best = s;
+      best = curr;
+      since_improvement = 0;
     }
   }
   return best;
