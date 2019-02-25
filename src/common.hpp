@@ -49,8 +49,8 @@ public:
 
         double maxRouteLength = -1;
         int i = 0;
-        for (int j = 0; j <= delimiters.size(); j++){ //sic!
-            int delimiter = (j < delimiters.size())? delimiters.at(j) : n - 1;
+        for (int j = 0; j <= int(delimiters.size()); j++){ //sic!
+            int delimiter = (j < int(delimiters.size())) ? delimiters.at(j) : n - 1;
 
             double routeLength = graph.at(0).at(sequence.at(i));
             for(; i < delimiter - 1; i++){
