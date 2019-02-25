@@ -19,22 +19,9 @@ int main() {
         {1, sqrt(2), sqrt(5), 2, 1, 0}
     };
 
-    int n = g.size(); // nodes
-    int m = 3; // vehicles
-    assert(n > 2);
-    assert(m > 1);
-    assert(m < n);
-
-    // Generate a random population
-    std::vector<Solution> population(POP_SIZE);
-    for (auto &s : population)
-        s.randomize(n, m);
-
-    for (int i = 0; i < 10; ++i) {
-        printf("--- Solution %d ---\n", i);
-        population[i].print();
-        population[i].mutate();
-        population[i].print();
-        printf("\n");
-    }
+    //printf("--- Final solution ---\n");
+    //genetic_algorithm(g, 3).print();
+    Solution s = {{1,4,5,3,2}, {0,3}};
+    s.print();
+    printf("Score: %lf\n", s.score(g));
 }

@@ -41,7 +41,7 @@ public:
     std::vector<int> delimiters;
 
     // Calculates score of solution
-    double score(const Graph & graph){
+    double score(const Graph & graph) const {
         int n = graph.size();
         int m = delimiters.size() + 1; 
         assert(n >= 3 && m >= 2);
@@ -87,23 +87,23 @@ public:
     }
 
     // Print solution for debugging
-    void print() {
-        printf("Vehicle 0: ");
+    void print() const {
+        printf("\tVehicle 0: ");
         for (int j = 0; j < delimiters[0]; ++j)
             printf("%d ", sequence[j]);
         printf("\n");
 
         for (int i = 1; i < int(delimiters.size()); ++i) {
-            printf("Vehicle %d: ", i);
+            printf("\tVehicle %d: ", i);
             for (int j = delimiters[i-1]; j < delimiters[i]; ++j)
                 printf("%d ", sequence[j]);
             printf("\n");
         }
 
-        printf("Vehicle %d: ", int(delimiters.size()));
+        printf("\tVehicle %d: ", int(delimiters.size()));
         for (int j = delimiters.back(); j < int(sequence.size()); ++j)
             printf("%d ", sequence[j]);
-        printf("\n\n");
+        printf("\n");
     }
 
 private:
