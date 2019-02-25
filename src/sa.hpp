@@ -1,7 +1,11 @@
 #ifndef _SA_HPP_
 #define _SA_HPP_
 
+#include <cfloat>
 #include "common.hpp"
+
+#define COOL_RATE 0.9999
+#define IMPROVE_LIMIT 1000000
 
 /*
   Always accept equal or better solutions.
@@ -13,30 +17,38 @@ bool accept(double new_s, double old_s, double temp) {
   return exp((old_s - new_s) / temp) > double(rand()) / RAND_MAX;
 }
 
-Solution simulated_annealing(const Graph &g, int m) {
-  Solution curr;
-  curr.randomize(g.size(),m);
-  Solution best = curr;
-  double best_score = curr.score(g);
-  double curr_score = best_score;
+Solution simulated_annealing(const Graph &graph, int m) {
+  Solution curr, best, next;
+  curr.randomize(graph.size(),m);
+  double curr_score = curr.score(graph), best_score = DBL_MAX;
 
-  double temp = 5000, cool_rate = 0.99999;
-  int since_improvement = 0;
-  while (++since_improvement < 1000000) {
-    temp *= cool_rate;
-    Solution s = curr;
-    s.mutate();
-    double new_score = s.score(g);
-    if (!accept(new_score, curr_score, temp))
-      continue;
-    curr_score = new_score;
-    curr = s;
-    if (curr_score < best_score) {
+  int reheat = 5;
+  while (reheat --> 0) {
+    double temp = 5000;
+    int since_improve = IMPROVE_LIMIT, tot = 0, tot_improve = 0;
+    while (since_improve --> 0) {
+      ++tot;
+      temp *= COOL_RATE;
+      next = curr;
+      next.mutate();
+      double new_score = next.score(graph);
+      if (!accept(new_score, curr_score, temp))
+        continue;
+      curr_score = new_score;
+      curr = next;
+      if (curr_score >= best_score)
+        continue;
+      ++tot_improve;
       best_score = new_score;
       best = curr;
-      since_improvement = 0;
+      since_improve = IMPROVE_LIMIT;
     }
+    printf("iterations: %d\n", tot);
+    printf("improvements: %d\n", tot_improve);
+    printf("score: %f\n", best_score);
+    printf("temp: %f\n\n", temp);
   }
+  best.print();
   return best;
 }
 
