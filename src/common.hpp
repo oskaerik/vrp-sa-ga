@@ -51,6 +51,8 @@ public:
         int i = 0;
         for (int j = 0; j <= int(delimiters.size()); j++){ //sic!
             int delimiter = (j < int(delimiters.size())) ? delimiters.at(j) : n - 1;
+            if(i == delimiter)
+                continue;
 
             double routeLength = graph.at(0).at(sequence.at(i));
             for(; i < delimiter - 1; i++){
