@@ -9,8 +9,5 @@
 
 int main() {
   srand(time(NULL));
-  Graph g = random_clustered_graph(N, 5, 4);
-  auto s = simulated_annealing(g, M);
-  s = brute_force(g, M);
-  printf("optimal score: %f\n", s.score(g));
+  auto g = clustered_and_uniform_graph(1000, 10, 1);
 }

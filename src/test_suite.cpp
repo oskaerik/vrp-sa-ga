@@ -4,9 +4,9 @@
 #include "ga.hpp"
 #include "bruteforce.hpp"
 
-#define N 11
-#define M 3
-#define C 3
+#define N 1000
+#define M 100
+#define C 10
 #define BRUTE_LIMIT 10
 
 using namespace std::chrono;
@@ -49,14 +49,20 @@ void test_all_graphs(int n, int m, int c) {
   printf("nodes: %d\n", n);
   printf("vehicles: %d\n", m);
   {
-    Graph graph = random_clustered_graph(n, c, 4);
+    Graph graph = clustered_graph(n, c, 4);
     printf("clustered graph:\n  clusters: %d\n", c);
     test(graph, m);
   }
   putchar('\n');
   {
-    Graph graph = random_uniform_graph(n);
+    Graph graph = uniform_graph(n);
     printf("uniform graph:\n");
+    test(graph, m);
+  }
+  putchar('\n');
+  {
+    Graph graph = clustered_and_uniform_graph(n, c, 4);
+    printf("clustered and uniform graph:\n");
     test(graph, m);
   }
 

@@ -11,7 +11,7 @@
 
 using Graph = std::vector<std::vector<double>>;
 
-Graph random_uniform_graph(int n, int size = 10){
+Graph uniform_graph(int n, int size = 10){
     assert(n >= 3);
 
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
@@ -32,7 +32,7 @@ Graph random_uniform_graph(int n, int size = 10){
     return graph;
 }
 
-Graph random_clustered_graph(int n, int c, int sd, int size = 100) {
+Graph clustered_graph(int n, int c, int sd, int size = 100) {
   assert(n >= 3);
   assert(c >= 2);
 
@@ -52,6 +52,44 @@ Graph random_clustered_graph(int n, int c, int sd, int size = 100) {
     double x = cluster.first + node_dis(gen);
     double y = cluster.second + node_dis(gen);
     nodes[i] = { x, y };
+  }
+
+  Graph graph(n, std::vector<double>(n));
+  for (int i = 0; i < n; ++i)
+    for (int j = 0; j < n; ++j) {
+      double x = nodes[i].first - nodes[j].first;
+      double y = nodes[i].second - nodes[j].second;
+      graph[i][j] = sqrt(x*x + y*y);
+    }
+  return graph;
+}
+
+Graph clustered_and_uniform_graph(int n, int c, int sd, int size = 100) {
+  assert(n >= 3);
+  assert(c >= 2);
+
+  std::random_device rd;  // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+  std::uniform_real_distribution<> dis(0, size); // Random uniform double distribution in [0, 10)
+  std::normal_distribution<> node_dis(0, sd);
+
+  std::vector<std::pair<double,double>> clusters(c);
+  for (int i = 0; i < c; ++i) {
+    clusters[i] = { dis(gen), dis(gen) };
+  }
+
+  std::vector<std::pair<double,double>> nodes(n);
+  int i = 0;
+  for (; i < n/2; ++i) {
+    auto cluster = clusters[rand() % c];
+    double x = cluster.first + node_dis(gen);
+    double y = cluster.second + node_dis(gen);
+    nodes[i] = { x, y };
+    printf("%f %f\n", x, y);
+  }
+  for (; i < n; ++i) {
+    nodes[i] = { dis(gen), dis(gen) };
+    printf("%f %f\n", nodes[i].first, nodes[i].second);
   }
 
   Graph graph(n, std::vector<double>(n));

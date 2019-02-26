@@ -37,7 +37,7 @@ SA_Answer simulated_annealing(const Graph &graph, int m) {
     double temp = 5000;
     int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
-      ++iterations;
+      if (++iterations > 100000) break;
       temp *= COOL_RATE;
       next = curr;
       next.mutate();
