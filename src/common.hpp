@@ -11,12 +11,12 @@
 
 using Graph = std::vector<std::vector<double>>;
 
-Graph uniform_random_2d_graph(int n){
+Graph uniform_random_graph(int n, int size = 10){
     assert(n >= 3);
 
-    std::random_device rd;  //Will be used to obtain a seed for the random number engine
-    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-    std::uniform_real_distribution<> dis(0, 10); // Random uniform double distribution in [0, 10)
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(0, size); // Random uniform double distribution in [0, 10)
 
     std::vector<double> xs;
     std::vector<double> ys;
@@ -25,14 +25,43 @@ Graph uniform_random_2d_graph(int n){
         ys.push_back(dis(gen));
     }
 
-    Graph graph(n, std::vector<double>(n, 0));
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            double dist = sqrt(pow(xs.at(j) - xs.at(i) , 2) + pow(ys.at(j) - ys.at(i), 2));
-            graph.at(i).at(j) = dist;
-        }
-    }
+    Graph graph(n, std::vector<double>(n));
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < n; j++)
+            graph[i][j] = sqrt(pow(xs[j] - xs[i] , 2) + pow(ys[j] - ys[i], 2));
     return graph;
+}
+
+Graph random_clustered_graph(int n, int c, int sd, int size = 100) {
+  assert(n >= 3);
+  assert(c >= 2);
+
+  std::random_device rd;  // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+  std::uniform_real_distribution<> cluster_dis(0, size); // Random uniform double distribution in [0, 10)
+  std::normal_distribution<> node_dis(0, sd);
+
+  std::vector<std::pair<double,double>> clusters(c);
+  for (int i = 0; i < c; ++i) {
+    clusters[i] = { cluster_dis(gen), cluster_dis(gen) };
+  }
+
+  std::vector<std::pair<double,double>> nodes(n);
+  for (int i = 0; i < n; ++i) {
+    auto cluster = clusters[rand() % c];
+    double x = cluster.first + node_dis(gen);
+    double y = cluster.second + node_dis(gen);
+    nodes[i] = { x, y };
+  }
+
+  Graph graph(n, std::vector<double>(n));
+  for (int i = 0; i < n; ++i)
+    for (int j = 0; j < n; ++j) {
+      double x = nodes[i].first - nodes[j].first;
+      double y = nodes[i].second - nodes[j].second;
+      graph[i][j] = sqrt(x*x + y*y);
+    }
+  return graph;
 }
 
 class Solution {
@@ -43,7 +72,7 @@ public:
     // Calculates score of solution
     double score(const Graph & graph) const {
         int n = graph.size();
-        int m = delimiters.size() + 1; 
+        int m = delimiters.size() + 1;
         assert(n >= 3 && m >= 2);
         assert(m < n);
 
