@@ -1,4 +1,5 @@
 #include "ga.hpp"
+#include "sa.hpp"
 
 int main() {
     srand(time(NULL));
@@ -9,7 +10,6 @@ int main() {
         {sqrt(2), 1, 0, 1},
         {1, sqrt(2), 1, 0}
     };
-    */
     Graph g = {
         {0, 1, sqrt(2), 1, sqrt(2), 1},
         {1, 0, 1, sqrt(2), 1, sqrt(2)},
@@ -18,10 +18,15 @@ int main() {
         {sqrt(2), 1, 2, sqrt(5), 0, 1},
         {1, sqrt(2), sqrt(5), 2, 1, 0}
     };
+    */
+    int n = 100, m = 5;
+    Graph g = uniform_random_2d_graph(n);
 
-    //printf("--- Final solution ---\n");
-    //genetic_algorithm(g, 3).print();
-    Solution s = {{1,4,5,3,2}, {0,3}};
+    auto s = genetic_algorithm(g, m);
+    printf("--- GA solution ---\nScore\t%lf\n", s.score(g));
     s.print();
-    printf("Score: %lf\n", s.score(g));
+
+    // s = simulated_annealing(g, m);
+    // printf("--- SA solution ---\nScore\t%lf\n", s.score(g));
+    // s.print();
 }

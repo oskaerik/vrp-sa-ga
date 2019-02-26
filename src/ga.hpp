@@ -8,7 +8,7 @@
 #define POP_SIZE 100
 #define GEN_LIMIT 1000
 #define MUT_RATE 0.1
-#define GEN_PRINT 1000000
+#define GEN_PRINT GEN_LIMIT+1
 
 using Population = std::vector<Solution>;
 
@@ -20,19 +20,14 @@ struct GA_Answer {
   GA_Answer(Solution s, int iterations, double score) : s(s), iterations(iterations), score(score) {}
 };
 
-Solution aex(const Solution &p1, const Solution &p2) {
-    // Create permutation mappings, from (index) -> to (value)
-    std::vector<int> map1(p1.sequence.size()+1);
-    std::vector<int> map2(p2.sequence.size()+1);
-    map1[p1.sequence.back()] = p1.sequence[0];
-    map2[p2.sequence.back()] = p2.sequence[0];
-    for (int i = 1; i < int(map1.size())-1; ++i) {
-        map1[p1.sequence[i-1]] = p1.sequence[i];
-        map2[p2.sequence[i-1]] = p2.sequence[i];
-    }
+Solution aex(Solution &p1, Solution &p2) {
+    // Get permutation mappings, from (index) -> to (value)
+    std::vector<int> map1 = p1.get_permutation_map();
+    std::vector<int> map2 = p2.get_permutation_map();
 
     // Perform AEX (indicies 0 and 1 are ok)
     Solution c = p1;
+    c.permutation_map.clear(); // Not the same permutation map as the parent
     std::vector<bool> added(map1.size(), false);
     added[c.sequence[0]] = added[c.sequence[1]] = true;
     bool p1_turn = false;
@@ -86,7 +81,7 @@ std::vector<double> fitness(const Population &pop, const Graph &g) {
 int roulette(const std::vector<double> &fitnesses) {
     double sum = 0;
     for (auto &f : fitnesses) sum += f;
-    double val = sum * ((double) rand() / RAND_MAX);
+    double val = sum * (double(rand()) / RAND_MAX);
     for (int i = 0; i < int(fitnesses.size()); ++i) {
         val -= fitnesses[i];
         if (val < 0) return i;
@@ -131,7 +126,7 @@ GA_Answer genetic_algorithm(const Graph &g, int m) {
 
     // Perform GA
     for (int i = 0; i < GEN_LIMIT; ++i) {
-        if (i % GEN_PRINT == 0) statistics(pop, g, i);
+        if ((i+1) % GEN_PRINT == 0) statistics(pop, g, i+1);
         auto fitnesses = fitness(pop, g);
         Population pop_next(POP_SIZE);
         for (int j = 0; j < int(pop_next.size()); ++j) {
@@ -139,7 +134,7 @@ GA_Answer genetic_algorithm(const Graph &g, int m) {
             auto p1 = pop[roulette(fitnesses)];
             auto p2 = pop[roulette(fitnesses)];
             auto c = aex(p1, p2);
-            if (((double) rand() / RAND_MAX) < MUT_RATE) c.mutate();
+            if (double(rand()) / RAND_MAX < MUT_RATE) c.mutate();
 
             // If c is better than the parents, keep it, otherwise roulette
             auto p1_penalty = penalty(p1, g);
