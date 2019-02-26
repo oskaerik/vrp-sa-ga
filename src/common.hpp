@@ -108,6 +108,16 @@ public:
         printf("\n");
     }
 
+    // Used by GA in AEX
+    std::vector<int> permutation_map;
+    std::vector<int> get_permutation_map() {
+        if (!permutation_map.empty()) return permutation_map;
+        permutation_map = std::vector<int>(sequence.size()+1);
+        permutation_map[sequence.back()] = sequence[0];
+        for (int i = 1; i < int(permutation_map.size())-1; ++i)
+            permutation_map[sequence[i-1]] = sequence[i];
+        return permutation_map;
+    }
 private:
     // Swap two nodes in the sequence
     void mutation_swap() {
