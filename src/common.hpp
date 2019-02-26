@@ -11,7 +11,7 @@
 
 using Graph = std::vector<std::vector<double>>;
 
-Graph uniform_random_graph(int n, int size = 10){
+Graph random_uniform_graph(int n, int size = 10){
     assert(n >= 3);
 
     std::random_device rd;  // Will be used to obtain a seed for the random number engine

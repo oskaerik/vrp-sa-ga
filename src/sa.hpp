@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 #define COOL_RATE 0.9999
-#define IMPROVE_LIMIT 1000000
+#define IMPROVE_LIMIT 100000
 
 /*
   Always accept equal or better solutions.
@@ -17,17 +17,27 @@ bool accept(double new_s, double old_s, double temp) {
   return exp((old_s - new_s) / temp) > double(rand()) / RAND_MAX;
 }
 
-Solution simulated_annealing(const Graph &graph, int m) {
+struct SA_Answer {
+  Solution s;
+  int iterations;
+  int improvements;
+  double score;
+
+  SA_Answer(Solution s, int iterations, int improvements, double score)
+  : s(s), iterations(iterations), improvements(improvements), score(score) { }
+};
+
+SA_Answer simulated_annealing(const Graph &graph, int m) {
   Solution curr, best, next;
   curr.randomize(graph.size(),m);
   double curr_score = curr.score(graph), best_score = DBL_MAX;
 
-  int reheat = 5;
+  int reheat = 1, iterations = 0, improvements = 0;
   while (reheat --> 0) {
     double temp = 5000;
-    int since_improve = IMPROVE_LIMIT, tot = 0, tot_improve = 0;
+    int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
-      ++tot;
+      ++iterations;
       temp *= COOL_RATE;
       next = curr;
       next.mutate();
@@ -38,18 +48,13 @@ Solution simulated_annealing(const Graph &graph, int m) {
       curr = next;
       if (curr_score >= best_score)
         continue;
-      ++tot_improve;
+      ++improvements;
       best_score = new_score;
       best = curr;
       since_improve = IMPROVE_LIMIT;
     }
-    printf("iterations: %d\n", tot);
-    printf("improvements: %d\n", tot_improve);
-    printf("score: %f\n", best_score);
-    printf("temp: %f\n\n", temp);
   }
-  best.print();
-  return best;
+  return { best, iterations, improvements, best_score };
 }
 
 #endif /* _SA_HPP_ */

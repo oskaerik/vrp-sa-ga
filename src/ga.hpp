@@ -5,12 +5,20 @@
 #include <cfloat>
 #include "common.hpp"
 
-#define POP_SIZE 1000
+#define POP_SIZE 100
 #define GEN_LIMIT 1000
 #define MUT_RATE 0.1
 #define GEN_PRINT 1000000
 
 using Population = std::vector<Solution>;
+
+struct GA_Answer {
+  Solution s;
+  int iterations;
+  double score;
+
+  GA_Answer(Solution s, int iterations, double score) : s(s), iterations(iterations), score(score) {}
+};
 
 Solution aex(const Solution &p1, const Solution &p2) {
     // Create permutation mappings, from (index) -> to (value)
@@ -87,8 +95,8 @@ int roulette(const std::vector<double> &fitnesses) {
 }
 
 void statistics(const Population &pop, const Graph &g, int generation) {
-    printf("Generation\t%d\n", generation);
-    printf("Population size\t%d\n", int(pop.size()));
+    // printf("Generation\t%d\n", generation);
+    // printf("Population size\t%d\n", int(pop.size()));
 
     auto fitnesses = fitness(pop, g);
     double mean = 0;
@@ -102,15 +110,15 @@ void statistics(const Population &pop, const Graph &g, int generation) {
         if (penalties[i] > worst.first) worst = {penalties[i], i};
     }
 
-    printf("Mean route\t%lf\n", mean);
-    printf("Best route\t%lf\n", best.first);
-    pop[best.second].print();
-    printf("Worst route\t%lf\n", worst.first);
-    pop[worst.second].print();
-    printf("\n");
+    // printf("Mean route\t%lf\n", mean);
+    // printf("Best route\t%lf\n", best.first);
+    // pop[best.second].print();
+    // printf("Worst route\t%lf\n", worst.first);
+    // pop[worst.second].print();
+    // printf("\n");
 }
 
-Solution genetic_algorithm(const Graph &g, int m) {
+GA_Answer genetic_algorithm(const Graph &g, int m) {
     int n = g.size();
     assert(n > 2);
     assert(m > 1);
@@ -153,7 +161,8 @@ Solution genetic_algorithm(const Graph &g, int m) {
     std::pair<double, int> best = {-1, -1};
     for (int i = 0; i < int(fitnesses.size()); ++i)
         if (fitnesses[i] > best.first) best = {fitnesses[i], i};
-    return pop[best.second];
+    auto s = pop[best.second];
+    return { s, POP_SIZE * GEN_LIMIT, s.score(g) };
 }
 
 #endif /* _GA_HPP_ */
