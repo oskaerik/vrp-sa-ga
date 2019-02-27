@@ -2,8 +2,8 @@
 #define _SA_HPP_
 
 #include <cfloat>
-#include <string>
 #include "common.hpp"
+#include "solution.hpp"
 
 #define COOL_RATE 0.9999
 #define IMPROVE_LIMIT 10000

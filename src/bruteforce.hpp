@@ -1,8 +1,9 @@
 #ifndef _BRUTEFORCE_HPP_
 #define _BRUTEFORCE_HPP_
 
-#include "common.hpp"
 #include <limits>
+#include "common.hpp"
+#include "solution.hpp"
 
 void brute_force_helper(int n, int m, const std::vector<int> & delimiters, int position, std::vector<std::vector<int>> & partitions) {
     if(position == delimiters.size()){

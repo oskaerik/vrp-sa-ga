@@ -6,6 +6,7 @@
 #include <fstream>
 #include <chrono>
 #include "common.hpp"
+#include "solution.hpp"
 
 #define POP_SIZE 100
 #define GEN_LIMIT 1000

@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include "common.hpp"
+#include "solution.hpp"
 #include "sa.hpp"
 #include "ga.hpp"
 #include "bruteforce.hpp"
