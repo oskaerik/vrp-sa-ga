@@ -23,7 +23,7 @@ Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, 
   char file_name[64];
   sprintf(file_name, "./out/sa_n%lu_m%d_c%d_%c_%d.csv", graph.size(), m, c, graph_type, run);
   std::ofstream file(file_name);
-  file << "score, time\n";
+  file << "score,time\n";
 
   auto before = high_resolution_clock::now();
   auto printed = before;
@@ -39,7 +39,7 @@ Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, 
     int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
       if (ms_since(printed) > MS_PRINT_INTERVAL) {
-        file << best_score << ", " << ms_since(before) << '\n';
+        file << best_score << ',' << ms_since(before) << '\n';
         printed = high_resolution_clock::now();
       }
       temp *= COOL_RATE;

@@ -127,7 +127,7 @@ Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int ru
             pop_next[j] = chosen;
             if (chosen_pen < best.second) best = { chosen, chosen_pen };
         }
-        file << best.second << "," << ms_since(t0) << '\n';
+        file << best.second << ',' << ms_since(t0) << '\n';
         pop = pop_next;
     }
     return best.first;
