@@ -23,10 +23,11 @@ std::vector<std::array<int,3>> test_cases = {
 int main() {
   srand(time(NULL));
   // Total runtime: 1h 8min
-  for (auto test : test_cases) {
+  for (auto &test : test_cases) {
     auto n = test[0];
     auto m = test[1];
     auto c = test[2];
+
     printf("\n\nRunning testcase:\nn: %d m: %d c: %d\n", n, m, c);
     auto u_g = uniform_graph(n);
     auto c_g = clustered_graph(n, c, 3);
@@ -37,9 +38,9 @@ int main() {
     for (int i = 0; i < RUNS; ++i) simulated_annealing(m_g, m, c, 'm', i);
     puts("SA done.");
 
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(u_g, m, c, 'u', i, 10);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(c_g, m, c, 'c', i, 10);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(m_g, m, c, 'm', i, 10);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(u_g, m, c, 'u', i);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(c_g, m, c, 'c', i);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(m_g, m, c, 'm', i);
     puts("GA done.");
 
     if (n > 11) continue;
