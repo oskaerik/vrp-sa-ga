@@ -20,7 +20,7 @@ Graph uniform_graph(int n, int size = 10){
 
   std::vector<std::pair<double,double>> nodes(n);
   for(int i = 0; i < n; i++)
-    nodes = { dis(gen), dis(gen) };
+    nodes[i] = { dis(gen), dis(gen) };
 
   Graph graph(n, std::vector<double>(n));
   for(int i = 0; i < n; i++)
