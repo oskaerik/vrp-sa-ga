@@ -50,7 +50,7 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     } while (std::next_permutation(sequence.begin(), sequence.end()));
 
     char file_name[64];
-    sprintf(file_name, "./out/brute_n%lu_m%d_%c.csv", graph.size(), m, graph_type);
+    sprintf(file_name, "./out/brute_n%lu_m%d_c%d_%c.csv", graph.size(), m, c, graph_type);
     std::ofstream file(file_name);
     file << "score\n" << best_solution.score(graph) << '\n';
 
