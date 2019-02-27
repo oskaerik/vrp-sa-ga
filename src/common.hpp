@@ -111,6 +111,12 @@ Graph clustered_and_uniform_graph(std::ofstream &file, int n, int c, int sd, int
   return graph;
 }
 
+void ms_since(const high_resolution_clock::time_point &t0) {
+  auto t1 = high_resolution_clock::now();
+  auto time_span = duration_cast<duration<ms>>(t1 - t0);
+  return time_span.count();
+}
+
 class Solution {
 public:
     std::vector<int> sequence;
