@@ -6,7 +6,7 @@
 #include "solution.hpp"
 
 void brute_force_helper(int n, int m, const std::vector<int> & delimiters, int position, std::vector<std::vector<int>> & partitions) {
-    if(position == delimiters.size()){
+    if(position == int(delimiters.size())){
         partitions.push_back(delimiters);
         return;
     }

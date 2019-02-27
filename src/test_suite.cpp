@@ -20,7 +20,10 @@ std::vector<std::array<int,3>> test_cases = {
 
 int main() {
   srand(time(NULL));
-  for (auto[n,m,c] : test_cases) {
+  for (auto test : test_cases) {
+    auto n = test[0];
+    auto m = test[1];
+    auto c = test[2];
     printf("\n\nRunning testcase:\nn: %d m: %d c: %d\n", n, m, c);
     auto u_g = uniform_graph(n);
     auto c_g = clustered_graph(n, c, 3);
