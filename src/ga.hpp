@@ -3,20 +3,16 @@
 
 #include <utility>
 #include <cfloat>
+#include <fstream>
+#include <chrono>
 #include "common.hpp"
 
-#define POP_SIZE 100
+#define POP_SIZE 10
 #define GEN_LIMIT 1000
 #define MUT_RATE 0.1
 #define GEN_PRINT GEN_LIMIT+1
 
 using Population = std::vector<Solution>;
-
-struct GA_Answer {
-  Solution s;
-  int iterations;
-  double score;
-};
 
 Solution aex(Solution &p1, Solution &p2) {
     // Get permutation mappings, from (index) -> to (value)
@@ -87,35 +83,17 @@ int roulette(const std::vector<double> &fitnesses) {
     return fitnesses.back(); // Only happens on rounding error
 }
 
-void statistics(const Population &pop, const Graph &g, int generation) {
-    // printf("Generation\t%d\n", generation);
-    // printf("Population size\t%d\n", int(pop.size()));
+Solution genetic_algorithm(const Graph &g, int m, char graph_type) {
+    char file_name[64];
+    sprintf(file_name, "out/ga_n%lu_m%d_%c.csv", g.size(), m, graph_type);
+    std::ofstream file(file_name);
+    file << "score,time\n";
 
-    auto fitnesses = fitness(pop, g);
-    double mean = 0;
-    std::pair<double, int> best = {DBL_MAX, -1};
-    std::pair<double, int> worst = {-DBL_MAX, -1};
-    std::vector<double> penalties(pop.size());
-    for (int i = 0; i < int(penalties.size()); ++i) {
-        penalties[i] = penalty(pop[i], g);
-        mean += penalties[i]/pop.size();
-        if (penalties[i] < best.first) best = {penalties[i], i};
-        if (penalties[i] > worst.first) worst = {penalties[i], i};
-    }
-
-    // printf("Mean route\t%lf\n", mean);
-    // printf("Best route\t%lf\n", best.first);
-    // pop[best.second].print();
-    // printf("Worst route\t%lf\n", worst.first);
-    // pop[worst.second].print();
-    // printf("\n");
-}
-
-GA_Answer genetic_algorithm(const Graph &g, int m) {
     int n = g.size();
     assert(n > 2);
     assert(m > 1);
     assert(m < n);
+    auto t0 = std::chrono::high_resolution_clock::now();
 
     // Generate a random population
     Population pop(POP_SIZE);
@@ -123,8 +101,8 @@ GA_Answer genetic_algorithm(const Graph &g, int m) {
         s.randomize(n, m);
 
     // Perform GA
+    std::pair<Solution, double> best = { pop[0], DBL_MAX };
     for (int i = 0; i < GEN_LIMIT; ++i) {
-        if ((i+1) % GEN_PRINT == 0) statistics(pop, g, i+1);
         auto fitnesses = fitness(pop, g);
         Population pop_next(POP_SIZE);
         for (int j = 0; j < int(pop_next.size()); ++j) {
@@ -135,27 +113,23 @@ GA_Answer genetic_algorithm(const Graph &g, int m) {
             if (double(rand()) / RAND_MAX < MUT_RATE) c.mutate();
 
             // If c is better than the parents, keep it, otherwise roulette
-            auto p1_penalty = penalty(p1, g);
-            auto p2_penalty = penalty(p2, g);
-            auto c_penalty = penalty(c, g);
-            Solution chosen = c;
-            if (c_penalty >= p1_penalty || c_penalty >= p2_penalty) {
+            Population cp_pop = { c, p1, p2 };
+            std::vector<double> cp_pen = { penalty(c, g), penalty(p1, g), penalty(p2, g) };
+            Solution chosen = cp_pop[0];
+            double chosen_pen = cp_pen[0];
+            if (cp_pen[0] >= cp_pen[1] || cp_pen[0] >= cp_pen[2]) {
                 // Roulette between p1, p2 and c
-                Population mini = {p1, p2, c};
-                chosen = mini[roulette(fitness(mini, g))];
+                int r = roulette(fitness(cp_pop, g));
+                chosen = cp_pop[r];
+                chosen_pen = cp_pen[r];
             }
             pop_next[j] = chosen;
+            if (chosen_pen < best.second) best = { chosen, chosen_pen };
         }
+        file << best.second << "," << ms_since(t0) << '\n';
         pop = pop_next;
     }
-
-    // Select best solution
-    auto fitnesses = fitness(pop, g);
-    std::pair<double, int> best = {-1, -1};
-    for (int i = 0; i < int(fitnesses.size()); ++i)
-        if (fitnesses[i] > best.first) best = {fitnesses[i], i};
-    auto s = pop[best.second];
-    return { s, POP_SIZE * GEN_LIMIT, s.score(g) };
+    return best.first;
 }
 
 #endif /* _GA_HPP_ */

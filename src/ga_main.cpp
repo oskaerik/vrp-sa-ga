@@ -10,6 +10,7 @@ int main() {
         {sqrt(2), 1, 0, 1},
         {1, sqrt(2), 1, 0}
     };
+    
     Graph g = {
         {0, 1, sqrt(2), 1, sqrt(2), 1},
         {1, 0, 1, sqrt(2), 1, sqrt(2)},
@@ -19,10 +20,12 @@ int main() {
         {1, sqrt(2), sqrt(5), 2, 1, 0}
     };
     */
-    int n = 100, m = 5;
-    Graph g = uniform_random_2d_graph(n);
+    
+    int n = 11, m = 3;
+    std::ofstream g_file("out/uniform.csv");
+    Graph g = uniform_graph(g_file, n);
 
-    auto s = genetic_algorithm(g, m);
+    auto s = genetic_algorithm(g, m, 'u');
     printf("--- GA solution ---\nScore\t%lf\n", s.score(g));
     s.print();
 
