@@ -17,7 +17,7 @@ std::vector<std::array<int,3>> test_cases = {
   {500, 50, 25},
   {1000, 10, 100},
   {1000, 100, 100},
-  {1000, 200, 100}
+  {1000, 200, 100},
 };
 
 int main() {
@@ -37,9 +37,9 @@ int main() {
     for (int i = 0; i < RUNS; ++i) simulated_annealing(m_g, m, c, 'm', i);
     puts("SA done.");
 
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(u_g, m, c, 'u', i);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(c_g, m, c, 'c', i);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(m_g, m, c, 'm', i);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(u_g, m, c, 'u', i, 10);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(c_g, m, c, 'c', i, 10);
+    for (int i = 0; i < RUNS; ++i) genetic_algorithm(m_g, m, c, 'm', i, 10);
     puts("GA done.");
 
     if (n > 11) continue;
