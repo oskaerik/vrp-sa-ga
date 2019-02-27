@@ -33,7 +33,7 @@ Graph uniform_graph(int n){
     double x = dis(gen);
     double y = dis(gen);
     nodes[i] = { x, y };
-    file << x << ", " << y << '\n';
+    file << x << ',' << y << '\n';
   }
 
   Graph graph(n, std::vector<double>(n));
@@ -69,7 +69,7 @@ Graph clustered_graph(int n, int c, int sd) {
     double x = cluster.first + node_dis(gen);
     double y = cluster.second + node_dis(gen);
     nodes[i] = { x, y };
-    file << x << ", " << y << '\n';
+    file << x << ',' << y << '\n';
   }
 
   Graph graph(n, std::vector<double>(n));
@@ -106,13 +106,13 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
     double x = cluster.first + node_dis(gen);
     double y = cluster.second + node_dis(gen);
     nodes[i] = { x, y };
-    file << x << ", " << y << '\n';
+    file << x << ',' << y << '\n';
   }
   for (; i < n; ++i) {
     double x = dis(gen);
     double y = dis(gen);
     nodes[i] = { x, y };
-    file << x << ", " << y << '\n';
+    file << x << ',' << y << '\n';
   }
 
   Graph graph(n, std::vector<double>(n));
