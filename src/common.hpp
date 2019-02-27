@@ -26,7 +26,7 @@ Graph uniform_graph(int n){
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-  std::uniform_real_distribution<> dis(0, 100); // Random uniform double distribution in [0, 10)
+  std::uniform_real_distribution<> dis(0, 100); // Random uniform double distribution in [0, 100)
 
   std::vector<std::pair<double,double>> nodes(n);
   for(int i = 0; i < n; i++) {
@@ -56,7 +56,7 @@ Graph clustered_graph(int n, int c, int sd) {
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-  std::uniform_real_distribution<> cluster_dis(0, 100); // Random uniform double distribution in [0, 10)
+  std::uniform_real_distribution<> cluster_dis(0, 100); // Random uniform double distribution in [0, 100)
   std::normal_distribution<> node_dis(0, sd);
 
   std::vector<std::pair<double,double>> clusters(c);
@@ -92,7 +92,7 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-  std::uniform_real_distribution<> dis(0, 100); // Random uniform double distribution in [0, 10)
+  std::uniform_real_distribution<> dis(0, 100); // Random uniform double distribution in [0, 100)
   std::normal_distribution<> node_dis(0, sd);
 
   std::vector<std::pair<double,double>> clusters(c);
@@ -131,4 +131,4 @@ auto ms_since(const high_resolution_clock::time_point &t0) {
   return time_span.count();
 }
 
-#endif
+#endif /* _COMMON_HPP_ */

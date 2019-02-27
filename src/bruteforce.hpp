@@ -57,4 +57,4 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     return best_solution;
 }
 
-#endif
+#endif /* _BRUTEFORCE_HPP_ */
