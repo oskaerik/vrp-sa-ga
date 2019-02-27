@@ -2,6 +2,7 @@
 #define _SA_HPP_
 
 #include <cfloat>
+#include <string>
 #include "common.hpp"
 
 #define COOL_RATE 0.9999
@@ -17,24 +18,29 @@ bool accept(double new_s, double old_s, double temp) {
   return exp((old_s - new_s) / temp) > double(rand()) / RAND_MAX;
 }
 
-struct SA_Answer {
-  Solution s;
-  int iterations;
-  int improvements;
-  double score;
-};
+Solution simulated_annealing(const Graph &graph, int m, char graph_type) {
+  char file_name[64];
+  sprintf(file_name, "./out/sa_n%lu_m%d_%c.csv", graph.size(), m, graph_type);
+  std::ofstream file(file_name);
+  file << "score, time\n";
 
-SA_Answer simulated_annealing(const Graph &graph, int m) {
+  auto before = high_resolution_clock::now();
+  auto printed = before;
+
   Solution curr, best, next;
-  curr.randomize(graph.size(),m);
-  double curr_score = curr.score(graph), best_score = DBL_MAX;
+  curr.randomize(graph.size(), m);
+  double curr_score = curr.score(graph);
+  double best_score = DBL_MAX;
 
-  int reheat = 1, iterations = 0, improvements = 0;
+  int reheat = 5, iterations = 0, improvements = 0;
   while (reheat --> 0) {
     double temp = 5000;
     int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
-      if (++iterations > 100000) break;
+      if (ms_since(printed) > 10) {
+        file << best_score << ", " << ms_since(before) << '\n';
+        printed = high_resolution_clock::now();
+      }
       temp *= COOL_RATE;
       next = curr;
       next.mutate();
@@ -51,7 +57,7 @@ SA_Answer simulated_annealing(const Graph &graph, int m) {
       since_improve = IMPROVE_LIMIT;
     }
   }
-  return { best, iterations, improvements, best_score };
+  return best;
 }
 
 #endif /* _SA_HPP_ */

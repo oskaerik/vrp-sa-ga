@@ -10,6 +10,9 @@
 #include <random>
 #include <fstream>
 
+using namespace std::chrono;
+using ms = std::chrono::milliseconds;
+
 using Graph = std::vector<std::vector<double>>;
 
 Graph uniform_graph(std::ofstream &file, int n, int size = 10){
@@ -111,9 +114,9 @@ Graph clustered_and_uniform_graph(std::ofstream &file, int n, int c, int sd, int
   return graph;
 }
 
-void ms_since(const high_resolution_clock::time_point &t0) {
+auto ms_since(const high_resolution_clock::time_point &t0) {
   auto t1 = high_resolution_clock::now();
-  auto time_span = duration_cast<duration<ms>>(t1 - t0);
+  auto time_span = duration_cast<ms>(t1 - t0);
   return time_span.count();
 }
 
