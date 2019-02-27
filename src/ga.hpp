@@ -7,7 +7,7 @@
 #include <chrono>
 #include "common.hpp"
 
-#define POP_SIZE 10
+#define POP_SIZE 100
 #define GEN_LIMIT 1000
 #define MUT_RATE 0.1
 #define GEN_PRINT GEN_LIMIT+1

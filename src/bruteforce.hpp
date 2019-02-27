@@ -19,7 +19,7 @@ void brute_force_helper(int n, int m, const std::vector<int> & delimiters, int p
     return;
 }
 
-Solution brute_force(const Graph & graph, int m) {
+Solution brute_force(const Graph & graph, int m, char graph_type) {
     int n = graph.size();
 
     assert(n >= 3 && m >= 2);
@@ -33,7 +33,7 @@ Solution brute_force(const Graph & graph, int m) {
     brute_force_helper(n, m, delimiters, 0, partitions);
 
     double minScore = std::numeric_limits<double>::max();
-    Solution bestSolution;
+    Solution best_solution;
     do {
         for(std::vector<int> delimiters : partitions){
             Solution solution;
@@ -43,12 +43,17 @@ Solution brute_force(const Graph & graph, int m) {
             double score = solution.score(graph);
             if(score < minScore){
                 minScore = score;
-                bestSolution = solution;
+                best_solution = solution;
             }
         }
     } while (std::next_permutation(sequence.begin(), sequence.end()));
 
-    return bestSolution;
+    char file_name[64];
+    sprintf(file_name, "./out/brute_n%lu_m%d_%c.csv", graph.size(), m, graph_type);
+    std::ofstream file(file_name);
+    file << "score\n" << best_solution.score(graph) << '\n';
+
+    return best_solution;
 }
 
 #endif

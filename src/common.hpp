@@ -168,7 +168,9 @@ public:
         // Generate random sequence
         for (int i = 0; i < int(sequence.size()); ++i)
             sequence[i] = i+1;
-        std::random_shuffle(sequence.begin(), sequence.end());
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::shuffle(sequence.begin(), sequence.end(), gen);
 
         // Set delimiters randomly
         for (int i = 0; i < int(delimiters.size()); ++i)
