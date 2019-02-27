@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <random>
 #include <fstream>
+#include <chrono>
 
 using namespace std::chrono;
 using ms = std::chrono::microseconds;

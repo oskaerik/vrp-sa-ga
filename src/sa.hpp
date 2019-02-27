@@ -6,7 +6,7 @@
 #include "solution.hpp"
 
 #define COOL_RATE 0.9999
-#define IMPROVE_LIMIT 10000
+#define IMPROVE_LIMIT 100000
 #define MS_PRINT_INTERVAL 500
 
 /*
@@ -19,9 +19,9 @@ bool accept(double new_s, double old_s, double temp) {
   return exp((old_s - new_s) / temp) > double(rand()) / RAND_MAX;
 }
 
-Solution simulated_annealing(const Graph &graph, int m, char graph_type) {
+Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, int run) {
   char file_name[64];
-  sprintf(file_name, "./out/sa_n%lu_m%d_%c.csv", graph.size(), m, graph_type);
+  sprintf(file_name, "./out/sa_n%lu_m%d_c%d_%c_%d.csv", graph.size(), m, c, graph_type, run);
   std::ofstream file(file_name);
   file << "score, time\n";
 

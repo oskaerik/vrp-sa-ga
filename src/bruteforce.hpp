@@ -20,7 +20,7 @@ void brute_force_helper(int n, int m, const std::vector<int> & delimiters, int p
     return;
 }
 
-Solution brute_force(const Graph & graph, int m, char graph_type) {
+Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     int n = graph.size();
 
     assert(n >= 3 && m >= 2);

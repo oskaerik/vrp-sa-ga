@@ -8,7 +8,7 @@
 #include "common.hpp"
 #include "solution.hpp"
 
-#define POP_SIZE 100
+#define POP_SIZE 1000
 #define GEN_LIMIT 1000
 #define MUT_RATE 0.1
 #define GEN_PRINT GEN_LIMIT+1
@@ -84,9 +84,9 @@ int roulette(const std::vector<double> &fitnesses) {
     return fitnesses.back(); // Only happens on rounding error
 }
 
-Solution genetic_algorithm(const Graph &g, int m, char graph_type) {
+Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int run) {
     char file_name[64];
-    sprintf(file_name, "out/ga_n%lu_m%d_%c.csv", g.size(), m, graph_type);
+    sprintf(file_name, "out/ga_n%lu_m%d_c%d_%c_%d.csv", g.size(), m, c, graph_type, run);
     std::ofstream file(file_name);
     file << "score,time\n";
 
