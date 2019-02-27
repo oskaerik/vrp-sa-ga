@@ -16,8 +16,6 @@ struct GA_Answer {
   Solution s;
   int iterations;
   double score;
-
-  GA_Answer(Solution s, int iterations, double score) : s(s), iterations(iterations), score(score) {}
 };
 
 Solution aex(Solution &p1, Solution &p2) {

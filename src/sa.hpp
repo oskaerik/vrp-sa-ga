@@ -22,9 +22,6 @@ struct SA_Answer {
   int iterations;
   int improvements;
   double score;
-
-  SA_Answer(Solution s, int iterations, int improvements, double score)
-  : s(s), iterations(iterations), improvements(improvements), score(score) { }
 };
 
 SA_Answer simulated_annealing(const Graph &graph, int m) {
