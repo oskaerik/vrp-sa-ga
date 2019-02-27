@@ -22,6 +22,7 @@ std::vector<std::array<int,3>> test_cases = {
 
 int main() {
   srand(time(NULL));
+  // Total runtime: 1h 8min
   for (auto test : test_cases) {
     auto n = test[0];
     auto m = test[1];
