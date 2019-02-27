@@ -8,19 +8,25 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <fstream>
 
 using Graph = std::vector<std::vector<double>>;
 
-Graph uniform_graph(int n, int size = 10){
+Graph uniform_graph(std::ofstream &file, int n, int size = 10){
   assert(n >= 3);
+  file << "Uniform graph, " << n << " nodes\n";
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(0, size); // Random uniform double distribution in [0, 10)
 
   std::vector<std::pair<double,double>> nodes(n);
-  for(int i = 0; i < n; i++)
-    nodes[i] = { dis(gen), dis(gen) };
+  for(int i = 0; i < n; i++) {
+    double x = dis(gen);
+    double y = dis(gen);
+    nodes[i] = { x, y };
+    file << x << ' ' << y << '\n';
+  }
 
   Graph graph(n, std::vector<double>(n));
   for(int i = 0; i < n; i++)
@@ -32,9 +38,10 @@ Graph uniform_graph(int n, int size = 10){
   return graph;
 }
 
-Graph clustered_graph(int n, int c, int sd, int size = 100) {
+Graph clustered_graph(std::ofstream &file, int n, int c, int sd, int size = 100) {
   assert(n >= 3);
   assert(c >= 2);
+  file << "Clustered graph, " << n << " nodes, " << c << " clusters, " << sd << " stdv\n";
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -51,6 +58,7 @@ Graph clustered_graph(int n, int c, int sd, int size = 100) {
     double x = cluster.first + node_dis(gen);
     double y = cluster.second + node_dis(gen);
     nodes[i] = { x, y };
+    file << x << ' ' << y << '\n';
   }
 
   Graph graph(n, std::vector<double>(n));
@@ -63,9 +71,10 @@ Graph clustered_graph(int n, int c, int sd, int size = 100) {
   return graph;
 }
 
-Graph clustered_and_uniform_graph(int n, int c, int sd, int size = 100) {
+Graph clustered_and_uniform_graph(std::ofstream &file, int n, int c, int sd, int size = 100) {
   assert(n >= 3);
   assert(c >= 2);
+  file << "Clustered and uniform graph, " << n << " nodes, " << c << " clusters, " << sd << " stdv\n";
 
   std::random_device rd;  // Will be used to obtain a seed for the random number engine
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
@@ -83,11 +92,13 @@ Graph clustered_and_uniform_graph(int n, int c, int sd, int size = 100) {
     double x = cluster.first + node_dis(gen);
     double y = cluster.second + node_dis(gen);
     nodes[i] = { x, y };
-    printf("%f %f\n", x, y);
+    file << x << ' ' << y << '\n';
   }
   for (; i < n; ++i) {
-    nodes[i] = { dis(gen), dis(gen) };
-    printf("%f %f\n", nodes[i].first, nodes[i].second);
+    double x = dis(gen);
+    double y = dis(gen);
+    nodes[i] = { x, y };
+    file << x << ' ' << y << '\n';
   }
 
   Graph graph(n, std::vector<double>(n));
