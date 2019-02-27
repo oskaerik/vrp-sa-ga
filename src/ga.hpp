@@ -84,7 +84,7 @@ int roulette(const std::vector<double> &fitnesses) {
     return fitnesses.back(); // Only happens on rounding error
 }
 
-Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int run) {
+Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int run, int pop_size = POP_SIZE) {
     char file_name[64];
     sprintf(file_name, "out/ga_n%lu_m%d_c%d_%c_%d.csv", g.size(), m, c, graph_type, run);
     std::ofstream file(file_name);
@@ -97,7 +97,7 @@ Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int ru
     auto t0 = std::chrono::high_resolution_clock::now();
 
     // Generate a random population
-    Population pop(POP_SIZE);
+    Population pop(pop_size);
     for (auto &s : pop)
         s.randomize(n, m);
 
@@ -105,7 +105,7 @@ Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int ru
     std::pair<Solution, double> best = { pop[0], DBL_MAX };
     for (int i = 0; i < GEN_LIMIT; ++i) {
         auto fitnesses = fitness(pop, g);
-        Population pop_next(POP_SIZE);
+        Population pop_next(pop_size);
         for (int j = 0; j < int(pop_next.size()); ++j) {
             // Create child and (maybe) mutate it
             auto p1 = pop[roulette(fitnesses)];
