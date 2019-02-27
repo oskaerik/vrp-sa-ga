@@ -11,7 +11,7 @@
 #include <fstream>
 
 using namespace std::chrono;
-using ms = std::chrono::milliseconds;
+using ms = std::chrono::microseconds;
 
 using Graph = std::vector<std::vector<double>>;
 

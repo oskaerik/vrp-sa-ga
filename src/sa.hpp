@@ -6,7 +6,8 @@
 #include "common.hpp"
 
 #define COOL_RATE 0.9999
-#define IMPROVE_LIMIT 100000
+#define IMPROVE_LIMIT 10000
+#define MS_PRINT_INTERVAL 500
 
 /*
   Always accept equal or better solutions.
@@ -32,12 +33,12 @@ Solution simulated_annealing(const Graph &graph, int m, char graph_type) {
   double curr_score = curr.score(graph);
   double best_score = DBL_MAX;
 
-  int reheat = 5, iterations = 0, improvements = 0;
+  int reheat = 5;
   while (reheat --> 0) {
     double temp = 5000;
     int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
-      if (ms_since(printed) > 10) {
+      if (ms_since(printed) > MS_PRINT_INTERVAL) {
         file << best_score << ", " << ms_since(before) << '\n';
         printed = high_resolution_clock::now();
       }
@@ -51,7 +52,6 @@ Solution simulated_annealing(const Graph &graph, int m, char graph_type) {
       curr = next;
       if (curr_score >= best_score)
         continue;
-      ++improvements;
       best_score = new_score;
       best = curr;
       since_improve = IMPROVE_LIMIT;
