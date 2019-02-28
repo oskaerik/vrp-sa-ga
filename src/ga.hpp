@@ -86,7 +86,7 @@ int roulette(const std::vector<double> &fitnesses) {
 
 Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int run, int pop_size = POP_SIZE) {
     char file_name[64];
-    sprintf(file_name, "out/ga_n%lu_m%d_c%d_%c_%d.csv", g.size(), m, c, graph_type, run);
+    sprintf(file_name, "./out/ga_n%lu_m%d_c%d_%c_%d.csv", g.size(), m, c, graph_type, run);
     std::ofstream file(file_name);
     file << "score,time\n";
 
