@@ -14,3 +14,10 @@ solution.
 
 Our results were that SA performed better in all our experiments, both in terms
 of time and average achieved score.
+
+Our results are included in the `results/` directory, the plots can be viewed
+in the `plot.ipynb` notebook.
+
+## How to run
+
+The test suite can be run by executing `make test` in the `src/` directory.
