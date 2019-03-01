@@ -17,6 +17,7 @@ using ms = std::chrono::microseconds;
 
 using Graph = std::vector<std::vector<double>>;
 
+// Generates a uniform graph with n nodes
 Graph uniform_graph(int n){
   assert(n >= 3);
   char file_name[64];
@@ -46,6 +47,7 @@ Graph uniform_graph(int n){
   return graph;
 }
 
+// Generates a clustered graph with n nodes, c clusters with a standard deviation of sd
 Graph clustered_graph(int n, int c, int sd) {
   assert(n >= 3);
   assert(c >= 2);
@@ -82,6 +84,7 @@ Graph clustered_graph(int n, int c, int sd) {
   return graph;
 }
 
+// Generates a mix of the clustered and uniform graphs
 Graph clustered_and_uniform_graph(int n, int c, int sd) {
   assert(n >= 3);
   assert(c >= 2);
@@ -125,7 +128,8 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
   return graph;
 }
 
-auto ms_since(const high_resolution_clock::time_point &t0) {
+// Returns the number of microseconds since the experiment started
+auto time_since(const high_resolution_clock::time_point &t0) {
   auto t1 = high_resolution_clock::now();
   auto time_span = duration_cast<ms>(t1 - t0);
   return time_span.count();

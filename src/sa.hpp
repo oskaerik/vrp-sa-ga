@@ -36,8 +36,8 @@ Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, 
     int since_improve = IMPROVE_LIMIT;
     while (since_improve --> 0) {
       temp *= COOL_RATE;
-      if (ms_since(printed) > MS_PRINT_INTERVAL) {
-        file << best_score << ',' << ms_since(t0) << '\n';
+      if (time_since(printed) > MS_PRINT_INTERVAL) {
+        file << best_score << ',' << time_since(t0) << '\n';
         printed = high_resolution_clock::now();
       }
 

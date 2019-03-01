@@ -20,6 +20,7 @@ std::vector<std::array<int,3>> test_cases = {
   {1000, 200, 100},
 };
 
+// Run the test suite
 int main() {
   srand(time(NULL));
   // Total runtime: 1h 8min

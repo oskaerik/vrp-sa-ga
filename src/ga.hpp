@@ -15,6 +15,7 @@
 
 using Population = std::vector<Solution>;
 
+// Performs the AEX crossover to create a child from two parents
 Solution aex(Solution &p1, Solution &p2) {
     // Get permutation mappings, from (index) -> to (value)
     std::vector<int> map1 = p1.get_permutation_map();
@@ -84,12 +85,15 @@ int roulette(const std::vector<double> &fitnesses) {
     return fitnesses.back(); // Only happens on rounding error
 }
 
+// Performs GA
 Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int run, int pop_size = POP_SIZE) {
+    // Create file for output
     char file_name[64];
     sprintf(file_name, "./out/ga_n%lu_m%d_c%d_%c_%d.csv", g.size(), m, c, graph_type, run);
     std::ofstream file(file_name);
     file << "score,time\n";
 
+    // Set up experiment
     int n = g.size();
     assert(n > 2);
     assert(m > 1);
@@ -127,7 +131,7 @@ Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int ru
             pop_next[j] = chosen;
             if (chosen_pen < best.second) best = { chosen, chosen_pen };
         }
-        file << best.second << ',' << ms_since(t0) << '\n';
+        file << best.second << ',' << time_since(t0) << '\n';
         pop = pop_next;
     }
     return best.first;
