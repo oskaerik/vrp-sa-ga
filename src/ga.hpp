@@ -1,10 +1,6 @@
 #ifndef _GA_HPP_
 #define _GA_HPP_
 
-#include <utility>
-#include <cfloat>
-#include <fstream>
-#include <chrono>
 #include "common.hpp"
 #include "solution.hpp"
 

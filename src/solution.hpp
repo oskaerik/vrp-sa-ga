@@ -1,8 +1,6 @@
 #ifndef _SOLUTION_HPP_
 #define _SOLUTION_HPP_
 
-#include <vector>
-#include <algorithm>
 #include "common.hpp"
 
 class Solution {

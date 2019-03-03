@@ -6,13 +6,13 @@
 #include "solution.hpp"
 
 void brute_force_helper(int n, int m, const std::vector<int> & delimiters, int position, std::vector<std::vector<int>> & partitions) {
-    if(position == int(delimiters.size())){
+    if(position == int(delimiters.size())) {
         partitions.push_back(delimiters);
         return;
     }
 
     int prev = (position == 0) ? 0 : delimiters.at(position - 1);
-    for(int i = prev; i <= n-1; i++){
+    for(int i = prev; i <= n-1; i++) {
         std::vector<int> newDelimiters(delimiters);
         newDelimiters.at(position) = i;
         brute_force_helper(n, m, newDelimiters, position + 1, partitions);
@@ -36,13 +36,13 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     double minScore = std::numeric_limits<double>::max();
     Solution best_solution;
     do {
-        for(std::vector<int> delimiters : partitions){
+        for(std::vector<int> delimiters : partitions) {
             Solution solution;
             solution.sequence = sequence;
             solution.delimiters = delimiters;
 
             double score = solution.score(graph);
-            if(score < minScore){
+            if(score < minScore) {
                 minScore = score;
                 best_solution = solution;
             }
