@@ -26,6 +26,7 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     assert(n >= 3 && m >= 2);
     assert(m < n);
 
+    // Setup
     std::vector<int> sequence(n-1);
     std::iota (sequence.begin(), sequence.end(), 1);
 
@@ -33,11 +34,11 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
     std::vector<std::vector<int>> partitions;
     brute_force_helper(n, m, delimiters, 0, partitions);
 
+    // Check all possible solutions
     double minScore = std::numeric_limits<double>::max();
-    Solution best_solution;
+    Solution best_solution, solution;
     do {
         for(std::vector<int> delimiters : partitions) {
-            Solution solution;
             solution.sequence = sequence;
             solution.delimiters = delimiters;
 
@@ -49,6 +50,7 @@ Solution brute_force(const Graph & graph, int m, int c, char graph_type) {
         }
     } while (std::next_permutation(sequence.begin(), sequence.end()));
 
+    // Create a file for optimal solution output
     char file_name[64];
     sprintf(file_name, "./out/brute_n%lu_m%d_c%d_%c.csv", graph.size(), m, c, graph_type);
     std::ofstream file(file_name);
