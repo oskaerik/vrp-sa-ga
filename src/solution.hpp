@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 
+// Represents a solution
 class Solution {
 public:
     std::vector<int> sequence;

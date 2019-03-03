@@ -23,8 +23,7 @@ double dist(const point &p1, const point &p2) {
   return sqrt(x*x + y*y);
 }
 
-// Returns a graph with points distributed
-// uniformly in the plane.
+// Generates a uniform graph with n nodes
 Graph uniform_graph(int n) {
   assert(n >= 3);
 
@@ -56,9 +55,7 @@ Graph uniform_graph(int n) {
   return graph;
 }
 
-// Returns a graph with points normally distributed
-// around clusters. Clusters are uniformly distributed
-// in the plane.
+// Generates a clustered graph with n nodes, c clusters with a standard deviation of sd
 Graph clustered_graph(int n, int c, int sd) {
   assert(n >= 3);
   assert(c >= 2);
@@ -98,9 +95,7 @@ Graph clustered_graph(int n, int c, int sd) {
   return graph;
 }
 
-// Returns a mix of uniform and clustered graph.
-// Half of the nodes are uniformly distributed,
-// the other half are normally distributed around cluster points.
+// Generates a mix of the clustered and uniform graphs
 Graph clustered_and_uniform_graph(int n, int c, int sd) {
   assert(n >= 3);
   assert(c >= 2);
@@ -150,7 +145,8 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
   return graph;
 }
 
-auto ms_since(const high_resolution_clock::time_point &t0) {
+// Returns the number of microseconds since the experiment started
+auto time_since(const high_resolution_clock::time_point &t0) {
   auto t1 = high_resolution_clock::now();
   auto time_span = duration_cast<ms>(t1 - t0);
   return time_span.count();
