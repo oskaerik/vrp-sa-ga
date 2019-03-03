@@ -7,26 +7,29 @@
 
 #define RUNS 5
 
+// Test case: (nodes, vehicles, clusters)
 std::vector<std::array<int,3>> test_cases = {
   {10, 3, 3},
-  // {10, 5, 3},
-  // {100, 10, 5},
-  // {500, 50, 25},
-  // {1000, 10, 100},
-  // {1000, 100, 100},
-  // {1000, 200, 100},
+  {10, 5, 3},
+  {100, 10, 5},
+  {500, 50, 25},
+  {1000, 10, 100},
+  {1000, 100, 100},
+  {1000, 200, 100},
 };
 
 // Run the test suite
 int main() {
   srand(time(NULL));
-  // Total runtime: 1h 8min
+  // Total runtime: ~1h 8min
   for (auto &test : test_cases) {
     auto n = test[0];
     auto m = test[1];
     auto c = test[2];
 
-    printf("\n\nRunning testcase:\nn: %d m: %d c: %d\n", n, m, c);
+    printf("\n\nRunning test case:\nn: %d m: %d c: %d\n", n, m, c);
+
+    // Generate the three graphs for this test case
     auto u_g = uniform_graph(n);
     auto c_g = clustered_graph(n, c, 3);
     auto m_g = clustered_and_uniform_graph(n, c, 3);
@@ -45,8 +48,8 @@ int main() {
 
     if (n > 10) continue;
 
-    // If it's a small graph also find the optimal solution
-    // through exhaustive search.
+    // If the graph is small enough also find the
+    // optimal solution through exhaustive search.
     brute_force(u_g, m, c, 'u');
     brute_force(c_g, m, c, 'c');
     brute_force(m_g, m, c, 'm');
