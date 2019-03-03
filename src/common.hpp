@@ -17,6 +17,13 @@ using ms = std::chrono::microseconds;
 using Graph = std::vector<std::vector<double>>;
 using point = std::pair<double,double>;
 
+// Returns the number of microseconds since t0
+auto time_since(const high_resolution_clock::time_point &t0) {
+  auto t1 = high_resolution_clock::now();
+  auto time_span = duration_cast<ms>(t1 - t0);
+  return time_span.count();
+}
+
 double dist(const point &p1, const point &p2) {
   double x = p1.first - p2.first;
   double y = p1.second - p2.second;
@@ -143,13 +150,6 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
     for (int j = 0; j < n; ++j)
       graph[i][j] = dist(nodes[i], nodes[j]);
   return graph;
-}
-
-// Returns the number of microseconds since the experiment started
-auto time_since(const high_resolution_clock::time_point &t0) {
-  auto t1 = high_resolution_clock::now();
-  auto time_span = duration_cast<ms>(t1 - t0);
-  return time_span.count();
 }
 
 #endif /* _COMMON_HPP_ */
