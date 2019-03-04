@@ -98,11 +98,15 @@ Solution genetic_algorithm(const Graph &g, int m, int c, char graph_type, int ru
 
     // Generate a random population
     Population pop(pop_size);
-    for (auto &s : pop)
+    std::pair<Solution, double> best = { pop[0], DBL_MAX };
+    for (auto &s : pop) {
         s.randomize(n, m);
+        double pen = penalty(s, g);
+        if (pen < best.second) best = { s, pen };
+    }
+    file << best.second << ',' << time_since(t0) << '\n';
 
     // Perform GA
-    std::pair<Solution, double> best = { pop[0], DBL_MAX };
     for (int i = 0; i < GEN_LIMIT; ++i) {
         auto fitnesses = fitness(pop, g);
         Population pop_next(pop_size);
