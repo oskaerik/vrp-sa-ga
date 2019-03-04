@@ -38,6 +38,8 @@ Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, 
   double curr_score = curr.score(graph);
   double best_score = DBL_MAX;
 
+  file << curr_score << ',' << time_since(t0) << '\n';
+
   // Perform SA
   int reheat = REHEATS;
   while (reheat --> 0) {
@@ -66,7 +68,7 @@ Solution simulated_annealing(const Graph &graph, int m, int c, char graph_type, 
       if (curr_score >= best_score)
         continue;
 
-      // Current solution is the best so far!
+      // Current solution is the best so far, save it
       best = curr;
       best_score = curr_score;
       since_improve = IMPROVE_LIMIT;
