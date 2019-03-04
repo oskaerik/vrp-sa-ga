@@ -35,16 +35,18 @@ int main() {
     auto m_g = clustered_and_uniform_graph(n, c, 3);
 
     // Test SA for all three graph types RUNS times
-    for (int i = 0; i < RUNS; ++i) simulated_annealing(u_g, m, c, 'u', i);
-    for (int i = 0; i < RUNS; ++i) simulated_annealing(c_g, m, c, 'c', i);
-    for (int i = 0; i < RUNS; ++i) simulated_annealing(m_g, m, c, 'm', i);
-    puts("SA done.");
+    printf("SA ");
+    for (int i = 0; i < RUNS; ++i) { simulated_annealing(u_g, m, c, 'u', i); putchar('.'); fflush(stdout); }
+    for (int i = 0; i < RUNS; ++i) { simulated_annealing(c_g, m, c, 'c', i); putchar('.'); fflush(stdout); }
+    for (int i = 0; i < RUNS; ++i) { simulated_annealing(m_g, m, c, 'm', i); putchar('.'); fflush(stdout); }
+    puts(" done.");
 
     // Test GA for all three graph types RUNS times
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(u_g, m, c, 'u', i);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(c_g, m, c, 'c', i);
-    for (int i = 0; i < RUNS; ++i) genetic_algorithm(m_g, m, c, 'm', i);
-    puts("GA done.");
+    printf("GA ");
+    for (int i = 0; i < RUNS; ++i) { genetic_algorithm(u_g, m, c, 'u', i); putchar('.'); fflush(stdout); }
+    for (int i = 0; i < RUNS; ++i) { genetic_algorithm(c_g, m, c, 'c', i); putchar('.'); fflush(stdout); }
+    for (int i = 0; i < RUNS; ++i) { genetic_algorithm(m_g, m, c, 'm', i); putchar('.'); fflush(stdout); }
+    puts(" done.");
 
     if (n > 10) continue;
 
