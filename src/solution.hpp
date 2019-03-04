@@ -59,27 +59,6 @@ public:
         else mutation_delimiter();
     }
 
-    // Overloads << to write out a solution, as nodes allocated per vehicle
-    friend std::ostream& operator<< (std::ostream& stream, Solution &s) {
-      stream << ",";
-      for (int j = 0; j < s.delimiters[0]; ++j)
-        stream << s.sequence[j] << ",";
-      stream << "\n";
-
-      for (int i = 1; i < int(s.delimiters.size()); ++i) {
-          stream << ",";
-          for (int j = s.delimiters[i-1]; j < s.delimiters[i]; ++j)
-            stream << s.sequence[j] << ",";
-          stream << "\n";
-      }
-
-      stream << ",";
-      for (int j = s.delimiters.back(); j < int(s.sequence.size()); ++j)
-        stream << s.sequence[j] << ",";
-      stream << "\n";
-      return stream;
-    }
-
     // Print solution for debugging
     void print() const {
         printf("\tVehicle 0: ");

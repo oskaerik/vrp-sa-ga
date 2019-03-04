@@ -24,11 +24,20 @@ auto time_since(const high_resolution_clock::time_point &t0) {
   return time_span.count();
 }
 
-double dist(const point &p1, const point &p2) {
-  double x = p1.first - p2.first;
-  double y = p1.second - p2.second;
-  return sqrt(x*x + y*y);
+// Create a graph with edge weights equal
+// to euclidian distance between the nodes
+Graph points_to_graph(const std::vector<point> &nodes) {
+  int n = nodes.size();
+  Graph graph(n, std::vector<double>(n));
+  for (int i = 0; i < n; ++i)
+    for (int j = 0; j < n; ++j) {
+      double x = nodes[i].first - nodes[j].first;
+      double y = nodes[i].second - nodes[j].second;
+      graph[i][j] = sqrt(x*x + y*y);
+    }
+  return graph;
 }
+
 
 // Generates a uniform graph with n nodes
 Graph uniform_graph(int n) {
@@ -53,13 +62,7 @@ Graph uniform_graph(int n) {
     file << x << ',' << y << '\n';
   }
 
-  // Create a graph with edge weights equal
-  // to euclidian distance between the nodes
-  Graph graph(n, std::vector<double>(n));
-  for(int i = 0; i < n; i++)
-    for(int j = 0; j < n; j++)
-      graph[i][j] = dist(nodes[i], nodes[j]);
-  return graph;
+  return points_to_graph(nodes);
 }
 
 // Generates a clustered graph with n nodes, c clusters with a standard deviation of sd
@@ -93,13 +96,7 @@ Graph clustered_graph(int n, int c, int sd) {
     file << x << ',' << y << '\n';
   }
 
-  // Create a graph with edge weights equal
-  // to euclidian distance between the nodes
-  Graph graph(n, std::vector<double>(n));
-  for (int i = 0; i < n; ++i)
-    for (int j = 0; j < n; ++j)
-      graph[i][j] = dist(nodes[i], nodes[j]);
-  return graph;
+  return points_to_graph(nodes);
 }
 
 // Generates a mix of the clustered and uniform graphs
@@ -143,13 +140,7 @@ Graph clustered_and_uniform_graph(int n, int c, int sd) {
     file << x << ',' << y << '\n';
   }
 
-  // Create a graph with edge weights equal
-  // to euclidian distance between the nodes
-  Graph graph(n, std::vector<double>(n));
-  for (int i = 0; i < n; ++i)
-    for (int j = 0; j < n; ++j)
-      graph[i][j] = dist(nodes[i], nodes[j]);
-  return graph;
+  return points_to_graph(nodes);
 }
 
 #endif /* _COMMON_HPP_ */
